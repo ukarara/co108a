@@ -27,14 +27,8 @@ Sel	A	B   Out
     0	1	1
     0	0	0
 
-DFF: Q{next}=D 
-有一個輸入、一個輸出和一個時脈輸入，當時脈由0轉為1時，輸出的值會和輸入的值相等。
-D	CK	Q	Qnext
-0	1	X	0
-1	1	X	1
-X	0	0	0
-X	0	1	1
+DFF: Out(t+1) = In(t)
     
-    Mux(a=dffout,b=in,sel=load,out=muxout); //load[t] == 0 THEN (out[t+1] = out[t])
-    DFF(in=muxout,out=dffout,out=out);  //load[t] == 1 then out[t+1] = in[t]
+    Mux(a=dffout,b=in,sel=load,out=muxout); 
+    DFF(in=muxout,out=dffout,out=out); 
 }
