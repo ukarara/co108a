@@ -40,4 +40,16 @@ CHIP CPU {
 
     PARTS:
     // Put your code here:
+    Or(a=ng, b=zr, out=ngzr);             // ngzr = (ng | zr)
+    Not(in=ngzr, out=gt);                  // g = out > 0 = !(ng | zr);  ng = (out < 0);  zr = (out = 0)
+    And(a=ng, b=j1, out=passLT);          // passLT = (ng & LT)
+    And(a=zr, b=j2, out=passEQ);          // passEQ = (zr & EQ)
+    And(a=gt, b=j3, out=passGT);          // passGT = (gt & GT)
+    Or(a=passLT, b=passEQ, out=passLE);
+    Or(a=passLE, b=passGT, out=pass);
+    And(a=isC, b=pass, out=PCload);       // PCload = isC & pass
+    PC(in=Aout, load=PCload, inc=true, reset=reset, out[0..14]=pc); // PCload = isC & ((ng&j1) | (zr&j2) | (!ng&!zr&j3))
+
+    // output
+    And(a=isC, b=d3, out=writeM);         // writeM = isC & d3
 }
